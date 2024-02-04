@@ -17,7 +17,6 @@ public final class UserValidationServiceImpl implements UserValidationService {
 
     @Override
     public boolean existsByUsername(final String userName) {
-        //TODO Change this to optional
-        return this.userRepository.findByUserName(userName) != null;
+        return this.userRepository.findByUsername(userName).isPresent();
     }
 }

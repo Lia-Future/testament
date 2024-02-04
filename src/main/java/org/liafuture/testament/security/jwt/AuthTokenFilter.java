@@ -1,5 +1,9 @@
 package org.liafuture.testament.security.jwt;
 
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,10 +16,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -31,7 +31,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         try {
             final Optional<String> userNameFromJWT = getUserNameFromJWT(request);
 
-            if (userNameFromJWT.isPresent()) {
+            if (!userNameFromJWT.isEmpty()) {
                 final UserDetails userDetails = this.userDetailsService.loadUserByUsername(userNameFromJWT.get());
 
                 final var authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
@@ -54,12 +54,11 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             return Optional.empty();
         }
 
-        return Optional.of(this.jwtUtils.getUserNameFromJwtToken(jwt));
+        return Optional.ofNullable(this.jwtUtils.getUserNameFromJwtToken(jwt));
     }
 
 
     private boolean isValidJwtToken(final String jwt) {
-
         return jwt != null && this.jwtUtils.validateJwtToken(jwt);
     }
 

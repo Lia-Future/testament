@@ -7,15 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.liafuture.testament.enums.UserGender;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import jakarta.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,13 +18,18 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserEntity {
+@Table(name = "users",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "user_name"),
+                @UniqueConstraint(columnNames = "email")
+        })
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "user_name")
-    private String userName;
+    private String username;
 
     @Column(name = "name")
     private String name;
@@ -62,5 +59,5 @@ public class UserEntity {
     @JoinTable(  name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<RoleEntity> roles = new HashSet<>();
+    private Set<Role> roles = new HashSet<>();
 }

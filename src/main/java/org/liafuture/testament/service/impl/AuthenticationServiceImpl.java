@@ -5,8 +5,8 @@ import org.liafuture.testament.converter.SignUpRequestToUserEntityConverter;
 import org.liafuture.testament.dto.request.LoginRequestDTO;
 import org.liafuture.testament.dto.request.SignUpRequestDTO;
 import org.liafuture.testament.dto.response.JwtResponse;
-import org.liafuture.testament.entity.RoleEntity;
-import org.liafuture.testament.entity.UserEntity;
+import org.liafuture.testament.entity.Role;
+import org.liafuture.testament.entity.User;
 import org.liafuture.testament.enums.UserRole;
 import org.liafuture.testament.exception.user.EmailAlreadyExists;
 import org.liafuture.testament.exception.user.UsernameAlreadyExists;
@@ -21,6 +21,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,13 +35,14 @@ public final class AuthenticationServiceImpl implements AuthenticationService {
     private final SignUpRequestToUserEntityConverter signUpRequestToUserEntityConverter;
     private final UserValidationService userValidationService;
     private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
 
     @Override
     public String signUp(final SignUpRequestDTO signUpRequest) throws UsernameAlreadyExists, EmailAlreadyExists {
-        if (this.userValidationService.existsByUsername(signUpRequest.getUserName())) {
+        if (this.userValidationService.existsByUsername(signUpRequest.getUsername())) {
             throw new UsernameAlreadyExists("Error: Username is already taken!");
         }
 
@@ -48,10 +50,20 @@ public final class AuthenticationServiceImpl implements AuthenticationService {
             throw new EmailAlreadyExists("Error: Email is already in use!");
         }
 
-        final UserEntity user = this.signUpRequestToUserEntityConverter.convert(signUpRequest);
+        signUpRequest.setPassword(this.passwordEncoder.encode(signUpRequest.getPassword()));
+
+        final User user = this.signUpRequestToUserEntityConverter.convert(signUpRequest);
 
         final Set<UserRole> strRoles = signUpRequest.getRolesOrDefault();
-        final Set<RoleEntity> roles = strRoles.stream()
+
+
+        if (roleRepository.findAll().isEmpty()) {
+            roleRepository.save(new Role(UserRole.ROLE_ADMIN));
+            roleRepository.save(new Role(UserRole.ROLE_USER));
+            roleRepository.save(new Role(UserRole.ROLE_MODERATOR));
+        }
+
+        final Set<Role> roles = strRoles.stream()
                 .map(this.roleRepository::findByName)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
@@ -66,7 +78,7 @@ public final class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public JwtResponse login(final LoginRequestDTO loginRequest) {
-        final var authenticationToken = new UsernamePasswordAuthenticationToken(loginRequest.getUserName(), loginRequest.getPassword());
+        final var authenticationToken = new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
 
         final Authentication authentication = this.authenticationManager.authenticate(authenticationToken);
 

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.liafuture.testament.converter.UserDTOToUserEntityConverter;
 import org.liafuture.testament.converter.UserEntityToUserDTOConverter;
 import org.liafuture.testament.dto.response.UserDTO;
-import org.liafuture.testament.entity.UserEntity;
+import org.liafuture.testament.entity.User;
 import org.liafuture.testament.repository.UserRepository;
 import org.liafuture.testament.service.UserService;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ public final class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO saveUser(final UserDTO requestUser) {
-        final UserEntity userEntity = this.userDTOToUserEntityConverter.convert(requestUser);
+        final User userEntity = this.userDTOToUserEntityConverter.convert(requestUser);
 
         try {
 
@@ -31,7 +31,7 @@ public final class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO loginUser(final UserDTO requestUser) {
-        final UserEntity userEntity = this.userDTOToUserEntityConverter.convert(requestUser);
+        final User userEntity = this.userDTOToUserEntityConverter.convert(requestUser);
 
         try {
 

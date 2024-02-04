@@ -1,6 +1,6 @@
 package org.liafuture.testament.exception;
 
-public abstract class TestamentAppException extends Exception {
+public abstract class TestamentAppException extends Throwable {
     public TestamentAppException() {
     }
 

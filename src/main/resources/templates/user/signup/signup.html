@@ -19,6 +19,9 @@
     .area-cel {
         width: 50px;
     }
+    .null{
+
+    }
 
 </style>
 
@@ -30,42 +33,42 @@
 <br>
 
 
-<form action="/formulario" method="post">
+<form id="form_signup" action="/formulario" onsubmit="return verificarCampo()"  method="post">
 
     <div class="div-form">
         <label class="separacion-label" for="Nombre">Nombre</label>
-        <input type="text" id="Nombre" name="Nombre" placeholder="Ingrese su nombre:"/>
+        <input required type="text" id="Nombre" name="Nombre" placeholder="Ingrese su nombre:"/>
     </div>
 
     <br>
 
     <div class="div-form">
         <label class="separacion-label" for="Apellido">Apellido</label>
-        <input  type="text" id="Apellido" name="Apellido" placeholder="Ingrese su apellido:"/>
+        <input required type="text" id="Apellido" name="Apellido" placeholder="Ingrese su apellido:"/>
     </div>
 
     <br>
     <div class="div-form">
         <label class="separacion-label" for="Usuario">Usuario</label>
-        <input type="text" id="Usuario" name="Usuario" placeholder="Ingrese su usuario:"/>
+        <input required type="text" id="Usuario" name="Usuario" placeholder="Ingrese su usuario:"/>
     </div>
 
     <br>
     <div class="div-form">
         <label class="separacion-label" for="Contraseña">Contraseña</label>
-        <input type="password" id="Contraseña" name="Contraseña" placeholder="Ingrese su contraseña:"/>
+        <input required type="password" id="Contraseña" name="Contraseña" placeholder="Ingrese su contraseña:"/>
     </div>
 
     <br>
     <div class="div-form">
         <label class="separacion-label" for="Email">Email</label>
-        <input type="email" id="Email" name="Email" placeholder="Correo electrónico:"/>
+        <input required type="email" id="Email" name="Email" placeholder="Correo electrónico:"/>
     </div>
 
     <br>
     <div class="div-form">
-        <label class="separacion-label" for="Fecha de nac.">Fecha de nac.</label>
-        <input type="date" id="Fecha de nac." name="Fecha de nac."/>
+        <label class="separacion-label" for="Fecha-de-nac.">Fecha de nac.</label>
+        <input required type="date" id="Fecha-de-nac." name="Fecha de nac."/>
     </div>
 
     <br>
@@ -76,35 +79,35 @@
             <option value="DNI">DNI</option>
             <option value="CUIT">CUIT</option>
         </select>
-        <input type="text" id="Documento" name="Documento" placeholder="Num. de doc.:"/>
+        <input required type="text" id="Documento" name="Documento" placeholder="      CUIT / DNI / CUIL"/>
 
     </div>
 
     <br>
-     <div class="div-form">
+    <div class="div-form">
 
-         <label class="separacion-label" for="mobile_number">Número de Móvil</label>
-         <input class="area-cel" type="text" id="cod-ar" name="" placeholder="Cod. Área:" pattern="[0-2]{0-6}" required/>
-         <input inputmode="numeric" type="text" id="mobile_number" name="" placeholder="Num. de teléfono:"  required maxlength="30"/>
+        <label class="separacion-label" for="mobile-number">Número de Móvil</label>
+        <input class="area-cel" type="text" id="cod-ar" name="" placeholder="Cod. Área:" />
+        <input required inputmode="numeric" type="text" id="mobile-number" name="" placeholder="Num. de teléfono:" maxlength="30"/>
 
-     </div>
+    </div>
 
     <br>
     <div class="div-form">
-        <label class="separacion-label" for="Documento">Nacionalidad</label>
-        <td class="cr25"><span class="e07nss"></span></td>
-        <td class="cr25"><select name="pais"class="drp" style="width:250;height:20" width=250>
-            <option value="">Seleccione</option>
+        <label class="separacion-label" for="select-nation">Nacionalidad </label>
+
+        <select id="select-nation">
+            <option disabled selected value="null_select">Seleccione</option>
             <option value="argentina">Argentina</option>
-            <option value="20">Afganistán</option>
-            <option value="30">Albania</option>
-            <option value="40">Alemania</option>
-            <option value="50">Andorra</option>
-            <option value="60">Angola</option>
-            <option value="70">Anguilla</option>
-            <option value="80">Antártida Argentina</option>
-            <option value="90">Antigua y Barbuda</option>
-            <option value="100">Antillas Holandesas</option>
+            <option value="afganistan">Afganistán</option>
+            <option value="albania">Albania</option>
+            <option value="alemania">Alemania</option>
+            <option value="andorra">Andorra</option>
+            <option value="angola">Angola</option>
+            <option value="anguilla">Anguilla</option>
+            <option value="antartica_argentina">Antártida Argentina</option>
+            <option value="antigua_y_barbuda">Antigua y Barbuda</option>
+            <option value="antillas_holandesas">Antillas Holandesas</option>
             <option value="110">Arabia Saudita</option>
             <option value="120">Argelia</option>
             <option value="130">Armenia</option>
@@ -296,9 +299,26 @@
             <option value="2000">Taiwán</option>
             <option value="uruguay">Uruguay</option>
         </select>
-        </td>
 
 
+    </div>
+
+    <br>
+    <div class="div-form" >
+        <div class="div-form" >
+            <label class="separacion-label" for="gen-personalizado">Género</label>
+            <select required id="gen-personalizado" onchange="generoPersonalizado()">
+
+                <option>Prefiero no decirlo</option>
+                <option>Masculino</option>
+                <option>Femenino</option>
+                <option value="personaX">Personalizado</option>
+            </select>
+        </div>
+
+        <div id="contenedor">
+
+        </div>
     </div>
 
     <br>
@@ -308,12 +328,89 @@
 
 
 
+    <button type="submit" onclick="alertaDeTodosLosDatos()">Iniciar sesión</button>
 
 
-    <button type="submit">Iniciar sesión</button>
 
 
 </form>
+
+<script>
+    function generoPersonalizado() {
+        let funcPersonalizado = document.getElementById("gen-personalizado").value;
+
+        if (funcPersonalizado === "personaX") {
+            // Crea un nuevo elemento div
+            let nuevoElemento = document.createElement("div");
+
+            // Agrega contenido HTML al nuevo elemento
+            nuevoElemento.innerHTML = "<input style='height: 13px' id='genx' type='text' placeholder='Identifiquise:' />";
+
+            // Obtiene el contenedor existente donde deseas agregar el nuevo elemento
+            let contenedor = document.getElementById("contenedor");
+
+            // Agrega el nuevo elemento al contenedor
+            contenedor.appendChild(nuevoElemento);
+        }
+        else{
+            let campX = document.getElementById("genx");
+
+            if (campX !== null) {
+                campX.parentNode.removeChild(campX);
+            }
+
+        }
+
+    };
+
+</script>
+
+
+<script>
+
+    function verificarCampo() {
+        let valorCampo = document.getElementById("select-nation").value;
+
+        if (valorCampo === "null_select") {
+            alert("Seleccione un país.");
+            return false
+        } else {
+            //document.getElementById("myForm").submit();
+            return true
+
+        }
+
+    };
+
+
+    function alertaDeTodosLosDatos(){
+        let valor1 = document.getElementById("Nombre").value;
+        let valor2 = document.getElementById("Apellido").value;
+        let valor3 = document.getElementById("Usuario").value;
+        let valor4 = document.getElementById("Contraseña").value;
+        let valor5 = document.getElementById("Email").value;
+        let valor6 = document.getElementById("Fecha-de-nac.").value;
+        let valor7 = document.getElementById("Documento").value;
+        let valor8 = document.getElementById("cod-ar").value;
+        let valor9 = document.getElementById("select-nation").value;
+        let valor10 = document.getElementById("gen-personalizado").value;
+
+        console.log(valor1);
+        console.log(valor2);
+        console.log(valor3);
+        console.log(valor4);
+        console.log(valor5);
+        console.log(valor6);
+        console.log(valor7);
+        console.log(valor8);
+        console.log(valor9);
+        console.log(valor10);
+
+
+    }
+
+
+</script>
 
 </body>
 </html>
