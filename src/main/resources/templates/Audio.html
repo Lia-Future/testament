@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>car</title>
+    <style>
+        .container {
+            color: black;
+            display: flex;
+            align-items: center;
+        }
+        .container h2{
+            font-family: "Bahnschrift","Arial";
+            color: black;
+            display: flex;
+            align-items: center;
+        }
+        audio {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Ismael Perez </h1>
+
+    <audio id="miAudio" controls>
+        <source th:attr="src='data:audio/mp3;base64,' + ${audioFromJava}" type="audio/mp3">
+        Tu navegador no soporta el elemento de audio.
+    </audio>
+
+
+</div>
+
+</body>
+</html>

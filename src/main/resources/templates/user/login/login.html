@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <title>Testamento Virtual</title>
+    <style>
+        .separacion-label {
+            width: 90px;
+        }
+
+        .div-form {
+            width: 400px;
+            display: flex;
+
+        }
+
+    </style>
+
+</head>
+<body>
+<h1>Bienvenido</h1>
+<img src="th.jpeg" width="100"/>
+<br>
+<br>
+
+
+    <form action="/formulario" method="post">
+
+        <div class="div-form">
+            <label class="separacion-label" for="Usuario">Usuario</label>
+            <input type="text" id="Usuario" name="Usuario" placeholder="Ingrese usuario:"/>
+        </div>
+
+        <br>
+
+        <div class="div-form">
+            <label class="separacion-label" for="contraseña">Contraseña</label>
+            <input  type="password" id="contraseña" name="contraseña" placeholder="Ingrese su contraseña:"/>
+        </div>
+
+
+        <br>
+
+        <button type="submit">Iniciar sesión</button>
+
+
+    </form>
+
+
+</body>
+</html>
